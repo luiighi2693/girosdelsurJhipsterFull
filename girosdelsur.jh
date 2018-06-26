@@ -1,0 +1,75 @@
+
+entity DailyRate {
+	mount Long,
+    dateDailyRate Instant
+}
+
+entity User {
+	firstName String,
+    lastName String,
+    email String,
+    cellphone String,
+    passwordUser String,
+	lastLogin Instant,
+	role RoleType
+}
+
+entity AccountUser {
+	name String,
+    bank String,
+    titular String,
+    number Integer,
+    identification String,
+	accountType String,
+	email String
+}
+
+entity Consignment {
+	dateConsignment Instant,
+    status ConsignmentStatus,
+	toDeposit Long,
+    toSend Long,
+    dailyRate String,
+    urlDeposit String,
+    urlSend String
+}
+
+entity Login {
+	token String,
+    dateLogin Instant,
+    active Boolean,
+}
+
+entity ForgotPassword {
+	codeRestore String,
+    status ForgotPasswordStatus
+}
+
+enum RoleType {
+    USER, ADMIN
+}
+
+enum ConsignmentStatus {
+    WAITING_FUNDS, WAITING_CONFIRM_FUNDS,
+    WAITING_SEND_FUNDS, FUNDS_SENDED
+}
+
+enum ForgotPasswordStatus {
+    TOSEND, SENDED, RESTORED
+}
+
+relationship OneToMany {
+	User{accountUser} to AccountUser{user}
+}
+
+relationship ManyToOne {
+	Consignment{accountUser} to AccountUser{consignment}
+}
+
+relationship OneToOne {
+	Login{user} to User{login}
+}
+
+relationship OneToOne {
+	ForgotPassword{user} to User{forgotPassword}
+}
